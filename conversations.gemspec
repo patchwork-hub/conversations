@@ -38,6 +38,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", "~> 8.0"
   spec.add_dependency "byebug"
+  spec.add_dependency "annotaterb"
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
