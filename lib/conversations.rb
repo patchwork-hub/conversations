@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "conversations/version"
+require "conversations/version"
+require "conversations/railtie"
+require "conversations/engine"
 
 module Conversations
   class Error < StandardError; end
