@@ -17,30 +17,30 @@ module Conversations::Api::V1::Patchwork
 
     private
 
-    def paginated_conversations
-      return [] if params[:target_account_id].blank?
+      def paginated_conversations
+        return [] if params[:target_account_id].blank?
 
-      account_conversation = AccountConversation
-                            .where(account: current_account)
-                            .where(participant_account_ids: [params[:target_account_id]])
+        account_conversation = AccountConversation
+                              .where(account: current_account)
+                              .where(participant_account_ids: [params[:target_account_id]])
 
-      return [] if account_conversation.blank?
+        return [] if account_conversation.blank?
 
-      account_conversation
-        .includes(
-          account: [:account_stat, user: :role],
-          last_status: [
-            :media_attachments,
-            :status_stat,
-            :tags,
-            {
-              preview_cards_status: { preview_card: { author_account: [:account_stat, user: :role] } },
-              active_mentions: :account,
-              account: [:account_stat, user: :role],
-            },
-          ]
-        )
-        .to_a_paginated_by_id(limit_param(LIMIT), params_slice(:max_id, :since_id, :min_id))
-    end
+        account_conversation
+          .includes(
+            account: [:account_stat, user: :role],
+            last_status: [
+              :media_attachments,
+              :status_stat,
+              :tags,
+              {
+                preview_cards_status: { preview_card: { author_account: [:account_stat, user: :role] } },
+                active_mentions: :account,
+                account: [:account_stat, user: :role],
+              },
+            ]
+          )
+          .to_a_paginated_by_id(limit_param(LIMIT), params_slice(:max_id, :since_id, :min_id))
+      end
   end
 end
