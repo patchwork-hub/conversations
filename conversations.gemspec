@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "Overrides conversations & mastodon build features"
   spec.description = "A custom gem to dynamically override the Mastodon conversations and build features, allowing for enhanced functionality and customization within the Mastodon ecosystem."
   spec.homepage = "https://www.joinpatchwork.org/"
-  spec.license = "MIT"
+  spec.license = "AGPL-3.0"
   spec.required_ruby_version = ">= 3.1.0"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   #   end
   # end
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+    Dir["{app,config,db,lib}/**/*", "LICENSE.txt", "Rakefile", "README.md"]
   end
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
