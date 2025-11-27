@@ -8,6 +8,7 @@ Conversations::Engine.routes.draw do
         resources :conversations, only: [] do
           collection do
             get 'check_conversation'
+            post 'read_all'
           end
         end
       end

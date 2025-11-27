@@ -6,6 +6,7 @@ module Conversations::Api::V1::Patchwork
 
     before_action -> { doorkeeper_authorize! :read, :'read:statuses' }, only: :check_conversation
     before_action -> { doorkeeper_authorize! :write, :'write:conversations' }, except: :check_conversation
+    before_action -> { doorkeeper_authorize! :write, :'write:conversations' }, only: :read_all
     before_action :require_user!
 
     def check_conversation
@@ -15,6 +16,15 @@ module Conversations::Api::V1::Patchwork
       render json: @conversations.last, serializer: REST::ConversationSerializer, relationships: StatusRelationshipsPresenter.new(@conversations.map(&:last_status), current_user&.account_id)
     end
 
+    def read_all
+      @conversations = AccountConversation.where(account: current_account, unread: true)
+      updated_count = @conversations.update_all(unread: false)
+
+      render json: {success: true, 
+      updated_count: updated_count,
+      message: "Marked #{updated_count} conversation(s) as read"}, each_serializer: REST::ConversationSerializer, relationships: StatusRelationshipsPresenter.new(@conversations.map(&:last_status), current_user&.account_id)
+    end
+    
     private
 
       def paginated_conversations
