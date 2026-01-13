@@ -1,24 +1,15 @@
 # Conversations
 
-A Rails engine that enhances Mastodon conversations with custom API endpoints and functionality for the Patchwork social network platform.
+A Rails engine that enhances Mastodon conversations with custom API endpoints for the Patchwork social network platform.
 
-## Overview
-
-The Conversations gem provides a custom Rails engine that extends Mastodon's conversation functionality. It adds specialized API endpoints and features designed for the Patchwork ecosystem, allowing for enhanced conversation management and interaction capabilities.
-
-## Features
-
-- Custom conversation API endpoints via `/api/v1/patchwork/conversations`
-- `check_conversation` endpoint for verifying conversations between accounts
-- Seamless integration with Mastodon and Patchwork platforms
-- Rails 8.0 compatibility
+This gem extends Mastodon's conversation functionality by providing specialized API endpoints for conversation management. It integrates seamlessly with the Patchwork ecosystem, offering features like conversation checking between accounts and bulk read status management.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'conversations'
+gem 'conversations', git: 'https://github.com/patchwork-hub/conversations.git'
 ```
 
 And then execute:
@@ -27,36 +18,57 @@ And then execute:
 bundle install
 ```
 
-Or install it yourself as:
-
-```bash
-gem install conversations
-```
-
-## Usage
-
-After installation, the gem automatically mounts its routes into your Rails application. The main API endpoint is available at:
-
-```
-GET/POST /api/v1/patchwork/conversations/check_conversation
-```
-
-### API Endpoints
-
-#### Check Conversation
-Endpoint: `/api/v1/patchwork/conversations/check_conversation`
-
-This endpoint allows you to check conversations between accounts in the Patchwork network.
-
-## Configuration
-
-The gem includes an initializer template that can be generated:
+Run the installation generator:
 
 ```bash
 rails generate conversations:install
 ```
 
-This will create a configuration file at `config/initializers/conversations.rb` where you can customize the gem's behavior.
+## Features
+
+### Conversation Management
+- **Check Conversation**: Verify if a conversation exists between the current user and a target account
+- **Mark All as Read**: Bulk operation to mark all unread conversations as read for the current account
+
+### Rails Engine Integration
+- **Isolated Namespace**: Clean separation from host application using `Conversations` namespace
+- **Auto-mounting Routes**: Automatically prepends engine routes to host application
+- **Migration Support**: Seamlessly appends database migrations to host application's migration path
+
+### Developer Experience
+- **Service Autoloading**: Automatic loading of service objects from `app/services`
+- **Worker Autoloading**: Automatic loading of background workers from `app/workers`
+- **Installation Generator**: Quick setup with initializer and migration support
+
+## API Endpoints
+
+### Patchwork Conversations
+```
+GET  /api/v1/patchwork/conversations/check_conversation  # Check conversation with target account
+POST /api/v1/patchwork/conversations/read_all            # Mark all conversations as read
+```
+
+#### Check Conversation
+Returns the conversation with a specified target account if one exists.
+
+**Parameters:**
+- `target_account_id` (required) - The ID of the account to check conversation with
+
+**Scopes Required:** `read` or `read:statuses`
+
+#### Read All
+Marks all unread conversations for the current account as read.
+
+**Response:**
+- `success` - Boolean indicating operation success
+- `updated_count` - Number of conversations marked as read
+- `message` - Human-readable result message
+
+**Scopes Required:** `write` or `write:conversations`
+
+## Configuration
+
+The gem creates an initializer at `config/initializers/prepend_conversations.rb` where you can add custom configuration using `Rails.application.config.to_prepare`.
 
 ## Development
 
@@ -70,7 +82,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/patchw
 
 ## License
 
-The gem is available as open source under the terms of the [AGPL-3.0 License](https://www.gnu.org/licenses/agpl-3.0.html).
+The gem is available as open source under the terms of the [AGPL-3.0 License](https://opensource.org/licenses/AGPL-3.0).
 
 ## Code of Conduct
 
