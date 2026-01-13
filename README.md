@@ -30,16 +30,6 @@ rails generate conversations:install
 - **Check Conversation**: Verify if a conversation exists between the current user and a target account
 - **Mark All as Read**: Bulk operation to mark all unread conversations as read for the current account
 
-### Rails Engine Integration
-- **Isolated Namespace**: Clean separation from host application using `Conversations` namespace
-- **Auto-mounting Routes**: Automatically prepends engine routes to host application
-- **Migration Support**: Seamlessly appends database migrations to host application's migration path
-
-### Developer Experience
-- **Service Autoloading**: Automatic loading of service objects from `app/services`
-- **Worker Autoloading**: Automatic loading of background workers from `app/workers`
-- **Installation Generator**: Quick setup with initializer and migration support
-
 ## API Endpoints
 
 ### Patchwork Conversations
